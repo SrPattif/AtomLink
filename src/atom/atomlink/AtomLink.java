@@ -8,6 +8,10 @@ import atom.atomlink.HTTPRequests.CheckToken;
 import atom.atomlink.HTTPRequests.ServerManager;
 import atom.atomlink.HTTPRequests.Triggers.CommandTrigger;
 import atom.atomlink.HTTPRequests.Updates.PlayerCountUpdate;
+import atom.atomlink.HTTPRequests.Updates.PlayerStatsUpdate;
+import atom.atomlink.Listeners.Stats.Blocks;
+import atom.atomlink.Listeners.Stats.EntityDamage;
+import atom.atomlink.Listeners.Stats.EntityKill;
 import atom.atomlink.Listeners.Stats.Join;
 import atom.atomlink.Utils.Debug;
 import atom.atomlink.Utils.FileManager;
@@ -27,7 +31,10 @@ public class AtomLink extends JavaPlugin {
 		al = this;
 		FileManager.carregarArquivos().createFiles(al);
 		
+		this.getServer().getPluginManager().registerEvents(new EntityKill(), this);
+		this.getServer().getPluginManager().registerEvents(new EntityDamage(), this);
 		this.getServer().getPluginManager().registerEvents(new Join(), this);
+		this.getServer().getPluginManager().registerEvents(new Blocks(), this);
 		
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
 		console.sendMessage(" ");
@@ -48,6 +55,7 @@ public class AtomLink extends JavaPlugin {
 				
 				PlayerCountUpdate.startTask();
 				CommandTrigger.startTask();
+				PlayerStatsUpdate.startTask();
 			} else {
 				Debug.logError("Invalid token on config.yml");
 			}
