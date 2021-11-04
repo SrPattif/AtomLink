@@ -15,7 +15,7 @@ import org.json.simple.parser.ParseException;
 import atom.atomlink.AtomLink;
 import atom.atomlink.Utils.Debug;
 
-public class PlayerUpdate {
+public class PlayerCountUpdate {
 	
 	private static int taskId;
 	private static long delay = 30 * 20L;

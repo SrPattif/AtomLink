@@ -7,7 +7,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import atom.atomlink.HTTPRequests.CheckToken;
 import atom.atomlink.HTTPRequests.ServerManager;
 import atom.atomlink.HTTPRequests.Triggers.CommandTrigger;
-import atom.atomlink.HTTPRequests.Updates.PlayerUpdate;
+import atom.atomlink.HTTPRequests.Updates.PlayerCountUpdate;
+import atom.atomlink.Listeners.Stats.Join;
 import atom.atomlink.Utils.Debug;
 import atom.atomlink.Utils.FileManager;
 
@@ -24,7 +25,9 @@ public class AtomLink extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		al = this;
-		FileManager.carregarArquivos().criarArquivos(al);
+		FileManager.carregarArquivos().createFiles(al);
+		
+		this.getServer().getPluginManager().registerEvents(new Join(), this);
 		
 		ConsoleCommandSender console = Bukkit.getConsoleSender();
 		console.sendMessage(" ");
@@ -33,17 +36,17 @@ public class AtomLink extends JavaPlugin {
 		console.sendMessage(" ");
 		
 		Debug.logInfo("Checking for Token...");
-		if(!FileManager.carregarArquivos().receberConfiguracoes().contains("token")) {
+		if(!FileManager.carregarArquivos().getConfig().contains("token")) {
 			Debug.logError("Token not found in config.yml. See how to get one at https://dev.bukkit.org/projects/atom-link");
 			
 		} else {
 			
-			token = FileManager.carregarArquivos().receberConfiguracoes().getString("token");
+			token = FileManager.carregarArquivos().getConfig().getString("token");
 			if(CheckToken.tokenExists(token)) {
 				Debug.logInfo("Token found. Checking informations...");
 				Debug.logInfo("Server name: " + ServerManager.getServerName(token));
 				
-				PlayerUpdate.startTask();
+				PlayerCountUpdate.startTask();
 				CommandTrigger.startTask();
 			} else {
 				Debug.logError("Invalid token on config.yml");

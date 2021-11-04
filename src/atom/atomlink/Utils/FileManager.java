@@ -16,8 +16,8 @@ import org.bukkit.plugin.Plugin;
 
 public class FileManager {
 	
-	public static File arquivoConfiguracoes;
-	public static FileConfiguration configuracoes;
+	public static File configFile;
+	public static FileConfiguration configs;
 	
 	private static FileManager carregar = new FileManager();
 
@@ -25,29 +25,29 @@ public class FileManager {
 		return carregar;
 	}
 	
-	public void criarArquivos(Plugin plugin) {
-		arquivoConfiguracoes = new File(plugin.getDataFolder(), "config.yml");
+	public void createFiles(Plugin plugin) {
+		configFile = new File(plugin.getDataFolder(), "config.yml");
 		
-		if (!arquivoConfiguracoes.exists()) {
+		if (!configFile.exists()) {
 			plugin.saveResource("config.yml", false);
 		}
 		
-		configuracoes = YamlConfiguration.loadConfiguration(arquivoConfiguracoes);
+		configs = YamlConfiguration.loadConfiguration(configFile);
 	}
 	
-	public FileConfiguration receberConfiguracoes() {
-		return configuracoes;
+	public FileConfiguration getConfig() {
+		return configs;
 	}
 	
-	public void salvarConfiguracoes() {
+	public void saveConfig() {
 		try {
-			configuracoes.save(arquivoConfiguracoes);
+			configs.save(configFile);
 		} catch (IOException e) {
 			Debug.logError("Error while saving the config.yml file");
 		}
 	}
 	
-	public void recarregarConfiguracoes() {
-		configuracoes = YamlConfiguration.loadConfiguration(arquivoConfiguracoes);
+	public void reloadConfig() {
+		configs = YamlConfiguration.loadConfiguration(configFile);
 	}
 }
