@@ -29,7 +29,7 @@ public class AtomLink extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		al = this;
-		FileManager.carregarArquivos().createFiles(al);
+		FileManager.loadFiles().createFiles(al);
 		
 		this.getServer().getPluginManager().registerEvents(new EntityKill(), this);
 		this.getServer().getPluginManager().registerEvents(new EntityDamage(), this);
@@ -43,12 +43,12 @@ public class AtomLink extends JavaPlugin {
 		console.sendMessage(" ");
 		
 		Debug.logInfo("Checking for Token...");
-		if(!FileManager.carregarArquivos().getConfig().contains("token")) {
+		if(!FileManager.loadFiles().getConfig().contains("token")) {
 			Debug.logError("Token not found in config.yml. See how to get one at https://dev.bukkit.org/projects/atom-link");
 			
 		} else {
 			
-			token = FileManager.carregarArquivos().getConfig().getString("token");
+			token = FileManager.loadFiles().getConfig().getString("token");
 			if(CheckToken.tokenExists(token)) {
 				Debug.logInfo("Token found. Checking informations...");
 				Debug.logInfo("Server name: " + ServerManager.getServerName(token));

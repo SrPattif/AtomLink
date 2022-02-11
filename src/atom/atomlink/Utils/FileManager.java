@@ -21,7 +21,7 @@ public class FileManager {
 	
 	private static FileManager carregar = new FileManager();
 
-	public static FileManager carregarArquivos() {
+	public static FileManager loadFiles() {
 		return carregar;
 	}
 	
